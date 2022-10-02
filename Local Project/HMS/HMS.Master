@@ -1,0 +1,713 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="HMS.master.cs" Inherits="HMS.HMS" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>YIFF - Hospital Management Systemn</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <!-- Bootstrap Core Css -->
+    <link href="assets/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <!-- Waves Effect Css -->
+    <link href="assets/plugins/node-waves/waves.css" rel="stylesheet" />
+    <!-- Animation Css -->
+    <link href="assets/plugins/animate-css/animate.css" rel="stylesheet" />
+    <!-- Morris Chart Css-->
+    <link href="assets/plugins/morrisjs/morris.css" rel="stylesheet" />
+
+    <link href="assets/plugins/multi-select/css/multi-select.css" rel="stylesheet">
+    <link href="assets/plugins/jquery-spinner/css/bootstrap-spinner.css" rel="stylesheet">
+    <link href="assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
+    <link href="assets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <link href="assets/plugins/nouislider/nouislider.min.css" rel="stylesheet" />
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+
+
+    <link href="assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
+    <!-- Bootstrap Material Datetime Picker Css -->
+    <link href="assets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <link href="assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <!-- Wait Me Css -->
+    <link href="assets/plugins/waitme/waitMe.css" rel="stylesheet" />
+
+    <!-- Custom Css -->
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="assets/css/themes/all-themes.css" rel="stylesheet" />
+    <link href="assets/plugins/dropzone/dropzone.css" rel="stylesheet" />
+    <link href="assets/plugins/morrisjs/morris.css" rel="stylesheet" />
+     <style>
+        .btnHov {
+            width: 100%;
+            cursor: pointer;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
+
+        .content-wrapper {
+            background-image: url("assets/img/bg2.png");
+        }
+    </style>
+    <style>
+        /*button width*/
+        .btnSize {
+            width: 10%;
+        }
+
+        .skinBtn {
+            width: 90%;
+            float: right;
+        }
+
+         .open {
+        overflow: visible!important;
+        }
+        .bs-searchbox {
+        width: 80%!important;
+        }
+    </style>
+
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body class="theme-red" runat="server" id="MainBody">
+    <form id="form_validation" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" EnablePageMethods="true" runat="server"></asp:ScriptManager>
+        <%--<asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" EnablePageMethods="true"></asp:ToolkitScriptManager>--%>
+        <%--<asp:Timer ID="Timer1" runat="server" OnTick="Timer1_Tick" Interval="1000"></asp:Timer>
+        <asp:Timer ID="Timer2" runat="server" OnTick="Timer2_Tick" Interval="3000"></asp:Timer>--%>
+        <!-- Page Loader -->
+        <div class="page-loader-wrapper">
+            <div class="loader">
+                <div class="preloader">
+                    <div class="spinner-layer pl-red">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+                <p>Please wait...</p>
+            </div>
+        </div>
+        <!-- #END# Page Loader -->
+        <!-- Overlay For Sidebars -->
+        <div class="overlay"></div>
+        <!-- #END# Overlay For Sidebars -->
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <div class="search-icon">
+                <i class="material-icons">search</i>
+            </div>
+            <input type="text" placeholder="START TYPING...">
+            <div class="close-search">
+                <i class="material-icons">close</i>
+            </div>
+        </div>
+        <!-- #END# Search Bar -->
+        <!-- Top Bar -->
+        <nav class="navbar">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+                    <a href="javascript:void(0);" class="bars"></a>
+                    <a class="navbar-brand" href="dashboard.aspx">
+                        <%-- <img src="assets/images/Hms-Logo.png" style="width: 37%; margin-top: -14px;" />--%>
+                        <span style="font-size: 16px; font-weight: bold;">YOUSUF IQBAL FAMILY FOUNDATION</span>
+                    </a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="navbar-collapse">
+
+                    <asp:UpdatePanel ID="uoAppointment" runat="server">
+                        <ContentTemplate>
+                            <ul class="nav navbar-nav navbar-right">
+
+                                <li class="dropdown" id="appointmentsNumber" runat="server" visible="false">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" title="Appointment Number">
+                                        <i class="material-icons">notifications</i>
+                                        <span class="label-count">
+                                            <asp:Label ID="lblTokenNumber" runat="server"></asp:Label></span>
+                                    </a>
+                                </li>
+                                <li class="dropdown" id="totalAppointments" runat="server" visible="false">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" title="Total Appointment(s)">
+                                        <i class="material-icons">flag</i>
+                                        <span class="label-count">
+                                            <asp:Label ID="lblTotalTokens" runat="server"></asp:Label></span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </ContentTemplate>
+                        <%--  <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="Timer1" EventName="Tick"></asp:AsyncPostBackTrigger>
+                        </Triggers>--%>
+                    </asp:UpdatePanel>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown" id="liAppointmentDetail" runat="server" visible="false">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                                <i class="material-icons">person_pin</i>
+                                <span class="label-count"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">DOCTORS APPOINTMENT</li>
+                                <li class="body">
+                                    <ul class="menu">
+                                        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                            <ContentTemplate>
+                                                <asp:Repeater ID="rptAppointment" runat="server">
+                                                    <ItemTemplate>
+                                                        <li>
+                                                            <a href="javascript:void(0);">
+                                                                <%--<div class="icon-circle bg-light-green">
+                                                                </div>--%>
+                                                                <div class="menu-info" style="width: 90%;">
+
+                                                                    <span style="width: 85%; float: left;">
+                                                                        <asp:Label ID="lblDoctor" runat="server" Text='<%# Eval("doctorName")%>'></asp:Label>
+                                                                    </span>
+                                                                    <span style="float: right;">
+                                                                        <asp:Label ID="lblDoctorAppointment" runat="server" Text='<%# Eval("totalTokens")%>'></asp:Label>
+                                                                    </span>
+
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </ContentTemplate>
+                                            <%-- <Triggers>
+                                                <asp:AsyncPostBackTrigger ControlID="Timer2" EventName="Tick"></asp:AsyncPostBackTrigger>
+                                            </Triggers>--%>
+                                        </asp:UpdatePanel>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a></li>
+                    </ul>
+
+                </div>
+
+
+            </div>
+        </nav>
+        <!-- #Top Bar -->
+        <section>
+            <!-- Left Sidebar -->
+            <aside id="leftsidebar" class="sidebar">
+                <!-- User Info -->
+                <div class="user-info navbar">
+                    <div class="image">
+                        <asp:Image ID="imgFaculty" runat="server" Width="48" Height="48" />
+                    </div>
+                    <div class="info-container" style="margin-top: -14px;">
+                        <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <asp:Label ID="lblUserName" runat="server"></asp:Label>
+                        </div>
+                        <div class="email">
+                            <asp:Label ID="lblDesignation" runat="server"></asp:Label>
+                        </div>
+                        <div class="email">
+                            <asp:Label ID="lblEmailId" runat="server"></asp:Label>
+                        </div>
+                        <div class="btn-group user-helper-dropdown">
+                            <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="profile.aspx"><i class="material-icons">person</i>Profile</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="changePassword.aspx"><i class="material-icons">update</i>Change Password</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="logout.aspx"><i class="material-icons">input</i>Log Out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- #User Info -->
+                <!-- Menu -->
+                <div class="menu">
+                    <ul class="list">
+                        <li class="header">MAIN NAVIGATION</li>
+                        <li class="active">
+                            <a href="dashboard.aspx">
+                                <i class="material-icons">home</i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="material-icons">assignment_ind</i>
+                                <span>Employee / Faculty</span>
+                            </a>
+                            <ul class="ml-menu">
+                                 <%  
+                                        if (BaseModel.InitializePageSecurityUser("facultyRegistration.aspx"))
+                                        {
+                                    %>
+                                <li id="empReg" runat="server">
+                                    <a href="facultyRegistration.aspx">Employee Registration</a>
+                                </li>
+                                  <%} %>
+                                 <%  
+                                        if (BaseModel.InitializePageSecurityUser("viewFacultyRegistration.aspx"))
+                                        {
+                                    %>
+                                <li id="empList" runat="server">
+                                    <a href="viewFacultyRegistration.aspx">Employee List</a>
+                                </li>
+                                  <%} %>
+                                 <%  
+                                        if (BaseModel.InitializePageSecurityUser("empCardPrint.aspx"))
+                                        {
+                                    %>
+                                <li id="empCardPrint" runat="server">
+                                    <a href="empCardPrint.aspx">Employee Card Print</a>
+                                </li>
+                                 <%} %>
+                                   <%  
+                                        if (BaseModel.InitializePageSecurityUser("systemAccess.aspx"))
+                                        {
+                                    %>
+                                
+                                <li id="sysAccess" runat="server">
+                                    <a href="systemAccess.aspx">System Access</a>
+                                </li>
+                                 <%} %>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="material-icons">person_pin</i>
+                                <span>Patients / Appointment</span>
+                            </a>
+                            <ul class="ml-menu">
+                                 <%  
+                                        if (BaseModel.InitializePageSecurityUser("patientRegistration.aspx"))
+                                        {
+                                    %>
+                                <li id="patientReg" runat="server">
+                                    <a href="patientRegistration.aspx">Patients Registration</a>
+                                </li>
+                                      <%} %>
+                                  <%  
+                                        if (BaseModel.InitializePageSecurityUser("patientMedicalCard.aspx"))
+                                        {
+                                    %>
+                                <li id="patientCardPrint" runat="server">
+                                    <a href="patientMedicalCard.aspx">Medical Card</a>
+                                </li>
+                                  <%} %>
+                                 <%  
+                                        if (BaseModel.InitializePageSecurityUser("token.aspx"))
+                                        {
+                                    %>
+                                <li id="appointment" runat="server">
+                                    <a href="token.aspx">Appointment</a>
+                                </li>
+                                  <%} %>
+                                 <%  
+                                        if (BaseModel.InitializePageSecurityUser("viewPatients.aspx"))
+                                        {
+                                    %>
+                                <li id="patientList" runat="server">
+                                    <a href="viewPatients.aspx">Patients List</a>
+                                </li>
+                                   <%} %>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="material-icons">add_to_photos</i>
+                                <span>Treatment</span>
+                            </a>
+                            <ul class="ml-menu">
+                                 <%  
+                                        if (BaseModel.InitializePageSecurityUser("treatment.aspx"))
+                                        {
+                                    %>
+                                <li id="treatment" runat="server">
+                                    <a href="treatment.aspx">Treatment</a>
+                                </li>
+                                    <%} %>
+                                  <%  
+                                        if (BaseModel.InitializePageSecurityUser("skipedPatients.aspx"))
+                                        {
+                                    %>
+                                <li id="skipedPatient" runat="server">
+                                    <a href="skipedPatients.aspx">Skiped Patients</a>
+                                </li>
+                                  <%} %>
+                                <%  
+                                        if (BaseModel.InitializePageSecurityUser("treatmentHistory.aspx"))
+                                        {
+                                    %>
+                                <li id="treatmentHistory" runat="server">
+                                    <a href="treatmentHistory.aspx">Treatment History</a>
+                                </li>
+                                   <%} %>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="material-icons">local_pharmacy</i>
+                                <span>Medical Medicine</span>
+                            </a>
+                            <ul class="ml-menu">
+                                 <%  
+                                        if (BaseModel.InitializePageSecurityUser("patientMedicalLog.aspx"))
+                                        {
+                                    %>
+                                <li id="internalMedicine" runat="server">
+                                    <a href="patientMedicalLog.aspx">Internal Medicine</a>
+                                </li>
+                                <%} %>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="material-icons">local_pharmacy</i>
+                                <span>Pharmacy</span>
+                            </a>
+                            <ul class="ml-menu">
+                                  <%  
+                                        if (BaseModel.InitializePageSecurityUser("viewPrescription.aspx"))
+                                        {
+                                    %>
+                                <li id="pharmacyPrescription" runat="server">
+                                    <a href="viewPrescription.aspx">Pharmacy Prescription</a>
+                                </li>
+                                 <%} %>
+                            </ul>
+                        </li>
+                        <li id="setting" runat="server">
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="material-icons">settings</i>
+                                <span>Settings</span>
+                            </a>
+                            <ul class="ml-menu">
+                                 <%  
+                                        if (BaseModel.InitializePageSecurityUser("drugs.aspx"))
+                                        {
+                                    %>
+                                <li id="liAddMedicneDrug" runat="server">
+                                    <a href="drugs.aspx">Medicne / Drugs</a>
+                                </li>
+                                 <%} %>
+                                 <%  
+                                        if (BaseModel.InitializePageSecurityUser("viewDrugList.aspx"))
+                                        {
+                                    %>
+                                <li id="liMedicneDrugList" runat="server">
+                                    <a href="viewDrugList.aspx">Medicne / Drugs List</a>
+                                </li>
+                                 <%} %>
+                                 <%  
+                                        if (BaseModel.InitializePageSecurityUser("addFee.aspx"))
+                                        {
+                                    %>
+                                <li id="liAddFee" runat="server">
+                                    <a href="addFee.aspx">Add Fee</a>
+                                </li>
+                                  <%} %>
+                                 <%  
+                                        if (BaseModel.InitializePageSecurityUser("viewFeeList.aspx"))
+                                        {
+                                    %>
+                                <li id="liFeeList" runat="server">
+                                    <a href="viewFeeList.aspx">View Fee List</a>
+                                </li>
+                                  <%} %>
+                                 <%  
+                                        if (BaseModel.InitializePageSecurityUser("department.aspx"))
+                                        {
+                                    %>
+                                 <li id="liManageDepartment" runat="server">
+                                    <a href="department.aspx">Manage Department</a>
+                                </li>
+                                    <%} %>
+                                <%  
+                                        if (BaseModel.InitializePageSecurityUser("designation.aspx"))
+                                        {
+                                    %>
+                                 <li id="liManageDesignation" runat="server">
+                                    <a href="designation.aspx">Manage Designation</a>
+                                </li>
+                                  <%} %>
+                                  <%  
+                                        if (BaseModel.InitializePageSecurityUser("speciality.aspx"))
+                                        {
+                                    %>
+                                 <li id="limanageSpeciality" runat="server">
+                                    <a href="speciality.aspx">Manage Speciality</a>
+                                </li>
+                                  <%} %>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="material-icons">insert_drive_file</i>
+                                <span>Reports</span>
+                            </a>
+                            <ul class="ml-menu">
+                                 <%  
+                                        if (BaseModel.InitializePageSecurityUser("accountreport.aspx"))
+                                        {
+                                    %>
+                                <li id="accountReport" runat="server">
+                                    <a href="accountreport.aspx">Accounts Report</a>
+                                </li>
+                                  <%} %>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="changePassword.aspx">
+                                <i class="material-icons">update</i>
+                                <span>Change Password</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="logout.aspx">
+                                <i class="material-icons">exit_to_app</i>
+                                <span>Log Out</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- #Menu -->
+                <!-- Footer -->
+                <div class="legal">
+                    <div class="copyright">
+                        &copy; 2020 <a href="javascript:void(0);">Developed By Supersoft Technology</a>.
+               
+                    </div>
+                    <div class="version">
+                        <b>Version: </b>1.0
+               
+                    </div>
+                </div>
+                <!-- #Footer -->
+            </aside>
+            <!-- #END# Left Sidebar -->
+            <!-- Right Sidebar -->
+            <aside id="rightsidebar" class="right-sidebar">
+                <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                    <li role="presentation" class="active"><a href="#skins" data-toggle="tab">SKINS</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active in active" id="skins">
+                        <ul class="demo-choose-skin">
+                            <li data-theme="red">
+                                <div class="red"></div>
+                                <asp:LinkButton ID="LinkButton2" runat="server" OnClick="ThemeChangered" CssClass="skinBtn">Red</asp:LinkButton>
+                            </li>
+                            <li data-theme="pink">
+                                <div class="pink"></div>
+                                <asp:LinkButton ID="pi" runat="server" OnClick="ThemeChangePink" CssClass="skinBtn">Pink</asp:LinkButton>
+                            </li>
+                            <li data-theme="purple">
+                                <div class="purple"></div>
+                                <asp:LinkButton ID="pu" runat="server" OnClick="ThemeChangepu" CssClass="skinBtn">Purple</asp:LinkButton>
+                            </li>
+                            <li data-theme="deep-purple">
+                                <div class="deep-purple"></div>
+                                <asp:LinkButton ID="LinkButton1" runat="server" OnClick="ThemeChangedeeppu" CssClass="skinBtn">Deep Purple</asp:LinkButton>
+                            </li>
+                            <li data-theme="indigo">
+                                <div class="indigo"></div>
+                                <asp:LinkButton ID="LinkButton3" runat="server" OnClick="ThemeChangeindigo" CssClass="skinBtn">Indigo</asp:LinkButton>
+                            </li>
+                            <li data-theme="blue">
+                                <div class="blue"></div>
+                                <asp:LinkButton ID="LinkButton4" runat="server" OnClick="ThemeChangeblue" CssClass="skinBtn">Blue</asp:LinkButton>
+                            </li>
+                            <li data-theme="light-blue">
+                                <div class="light-blue"></div>
+                                <asp:LinkButton ID="LinkButton5" runat="server" OnClick="ThemeChangelb" CssClass="skinBtn">Light Blue</asp:LinkButton>
+                            </li>
+                            <li data-theme="cyan">
+                                <div class="cyan"></div>
+                                <asp:LinkButton ID="LinkButton6" runat="server" OnClick="ThemeChangecyan" CssClass="skinBtn">Cyan</asp:LinkButton>
+                            </li>
+                            <li data-theme="teal">
+                                <div class="teal"></div>
+                                <asp:LinkButton ID="LinkButton7" runat="server" OnClick="ThemeChangeteal" CssClass="skinBtn">Teal</asp:LinkButton>
+                            </li>
+                            <li data-theme="green">
+                                <div class="green"></div>
+                                <asp:LinkButton ID="LinkButton8" runat="server" OnClick="ThemeChangegreen" CssClass="skinBtn">Green</asp:LinkButton>
+                            </li>
+                            <li data-theme="light-green">
+                                <div class="light-green"></div>
+                                <asp:LinkButton ID="LinkButton9" runat="server" OnClick="ThemeChangelg" CssClass="skinBtn">Light Green</asp:LinkButton>
+                            </li>
+                            <li data-theme="lime">
+                                <div class="lime"></div>
+                                <asp:LinkButton ID="LinkButton10" runat="server" OnClick="ThemeChangelime" CssClass="skinBtn">Lime</asp:LinkButton>
+                            </li>
+                            <li data-theme="yellow">
+                                <div class="yellow"></div>
+                                <asp:LinkButton ID="LinkButton11" runat="server" OnClick="ThemeChangeyellow" CssClass="skinBtn">Yellow</asp:LinkButton>
+                            </li>
+                            <li data-theme="amber">
+                                <div class="amber"></div>
+                                <asp:LinkButton ID="LinkButton12" runat="server" OnClick="ThemeChangeamber" CssClass="skinBtn">Amber</asp:LinkButton>
+                            </li>
+                            <li data-theme="orange">
+                                <div class="orange"></div>
+                                <asp:LinkButton ID="LinkButton13" runat="server" OnClick="ThemeChangeorange" CssClass="skinBtn">Orange</asp:LinkButton>
+                            </li>
+                            <li data-theme="deep-orange">
+                                <div class="deep-orange"></div>
+                                <asp:LinkButton ID="LinkButton14" runat="server" OnClick="ThemeChangedo" CssClass="skinBtn">Deep Orange</asp:LinkButton>
+                            </li>
+                            <li data-theme="brown">
+                                <div class="brown"></div>
+                                <asp:LinkButton ID="LinkButton15" runat="server" OnClick="ThemeChangebrown" CssClass="skinBtn">Brown</asp:LinkButton>
+                            </li>
+                            <li data-theme="grey">
+                                <div class="grey"></div>
+                                <asp:LinkButton ID="LinkButton16" runat="server" OnClick="ThemeChangegrey" CssClass="skinBtn">Grey</asp:LinkButton>
+                            </li>
+                            <li data-theme="blue-grey">
+                                <div class="blue-grey"></div>
+                                <asp:LinkButton ID="LinkButton17" runat="server" OnClick="ThemeChangebg" CssClass="skinBtn">Blue Grey</asp:LinkButton>
+                            </li>
+                            <li data-theme="black">
+                                <div class="black"></div>
+                                <asp:LinkButton ID="LinkButton18" runat="server" OnClick="ThemeChangeblack" CssClass="skinBtn">Black</asp:LinkButton>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </aside>
+            <!-- #END# Right Sidebar -->
+        </section>
+
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="card">
+                            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                            </asp:ContentPlaceHolder>
+                            <%--Model Popup--%>
+                            <div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="defaultModalLabel">Message</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <asp:Label ID="txtMessage" runat="server"></asp:Label>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <%--Model Popup--%>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- Jquery Core Js -->
+        <script src="assets/plugins/jquery/jquery.min.js"></script>
+        <!-- Bootstrap Core Js -->
+        <script src="assets/plugins/bootstrap/js/bootstrap.js"></script>
+        <!-- Select Plugin Js -->
+        <script src="assets/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+        <!-- Slimscroll Plugin Js -->
+        <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+        <script src="assets/plugins/jquery-validation/jquery.validate.js"></script>
+        <script src="assets/plugins/jquery-steps/jquery.steps.js"></script>
+        <script src="assets/js/pages/forms/form-validation.js"></script>
+
+
+
+        <script src="assets/plugins/dropzone/dropzone.js"></script>
+        <script src="assets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+        <script src="assets/plugins/multi-select/js/jquery.multi-select.js"></script>
+        <script src="assets/plugins/jquery-spinner/js/jquery.spinner.js"></script>
+        <script src="assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+        <%--<script src="assets/plugins/nouislider/nouislider.js"></script>--%>
+        <script src="assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+
+        <!-- Waves Effect Plugin Js -->
+        <script src="assets/plugins/node-waves/waves.js"></script>
+        <!-- Jquery CountTo Plugin Js -->
+        <script src="assets/plugins/jquery-countto/jquery.countTo.js"></script>
+        <!-- Morris Plugin Js -->
+        <script src="assets/plugins/raphael/raphael.min.js"></script>
+        <script src="assets/plugins/morrisjs/morris.js"></script>
+        <script src="assets/js/pages/ui/dialogs.js"></script>
+
+
+        <!-- SweetAlert Plugin Js -->
+        <script src="assets/plugins/sweetalert/sweetalert.min.js"></script>
+
+        <!-- Jquery DataTable Plugin Js -->
+        <script src="assets/plugins/jquery-datatable/jquery.dataTables.js"></script>
+        <script src="assets/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+        <script src="assets/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
+        <script src="assets/plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
+        <script src="assets/plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
+        <script src="assets/plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
+        <script src="assets/plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
+        <script src="assets/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
+        <script src="assets/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
+        <script src="assets/js/pages/tables/jquery-datatable.js"></script>
+        <!-- Bootstrap Datepicker Plugin Js -->
+        <script src="assets/plugins/momentjs/moment.js"></script>
+        <script src="assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+        <script src="assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+        <!-- Custom Js -->
+        <script src="assets/js/admin.js"></script>
+        <script src="assets/js/pages/forms/basic-form-elements.js"></script>
+        <%--    <script src="assets/js/pages/forms/advanced-form-elements.js"></script>--%>
+        <!-- Autosize Plugin Js -->
+        <script src="assets/plugins/autosize/autosize.js"></script>
+
+        <%--       <script src="assets/js/pages/index.js"></script>--%>
+        <!-- Demo Js -->
+        <script src="assets/js/demo.js"></script>
+
+
+        <script src="assets/plugins/morrisjs/morris.js"></script>
+
+
+
+        <%--    <!-- Sparkline Chart Plugin Js -->
+    <script src="assets/plugins/jquery-sparkline/jquery.sparkline.js"></script>--%>
+
+        <!-- Custom Js -->
+        <%--<script src="assets/js/pages/index.js"></script>--%>
+    </form>
+</body>
+</html>
